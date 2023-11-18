@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+​   {% for category in categories %}
+<div class="category">
+    <h2>{{ category.name }}</h2>
+
+    {% for item in category.items.all %}
+        <div class="item">
+            <h3>{{ item.name }}</h3>
+            <p>{{ item.description }}</p>
+        </div>
+    {% endfor %}
+</div>
+{% endfor %}
+
+</body>
+</html>
