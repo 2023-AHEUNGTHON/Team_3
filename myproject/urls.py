@@ -17,8 +17,8 @@ Including another URLconf
 from django.urls import path
 from django.contrib import admin
 from myapp import views
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('categories/', views.category_list, name='category_list'),
+    path('survey/', views.survey_form, name='survey'),
 ]

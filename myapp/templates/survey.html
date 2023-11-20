@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>설문조사</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <h1>나의 관심 분야를 고르세요</h1>
+    <form id="survey-form">
+        <input type="checkbox" id="fashion" name="interest" value="1">
+        <label for="fashion">패션</label><br>
+        <input type="checkbox" id="exercise" name="interest" value="2">
+        <label for="exercise">운동</label><br>
+        <input type="checkbox" id="furniture" name="interest" value="3">
+        <label for="furniture">가구</label><br>
+        <input type="submit" value="제출">
+    </form>
+
+    <script>
+    $("#survey-form").submit(function(e) {
+        e.preventDefault();
+        
+        var selectedInterests = $("input:checkbox[name=interest]:checked").map(function(){
+            return $(this).val();
+        }).get();
+        
+        $.ajax({
+            url: '/survey',  
+            type: 'POST', 
+            contentType: 'application/json', 
+            data: JSON.stringify({ 'interest': selectedInterests }), 
+            dataType: 'json'
+        });
+    });
+    </script>
+</body>
+</html>
