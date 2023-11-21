@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h1>팝업스토어 추천</h1>
+    <form id="recommendation-form" method="post">
+        {% csrf_token %}
+        <label for="location">당신의 위치:</label><br>
+        <input type="text" id="location" name="location"><br>
+        <label for="interests">관심사항(콤마로 구분):</label><br>
+        <input type="text" id="interests" name="interests"><br>
+        <label for="distance_limit">거리 제한:</label><br>
+        <input type="text" id="distance_limit" name="distance_limit"><br>
+        <input type="submit" value="조회">
+    </form>
+    <h2>추천 팝업스토어</h2>
+    <div id="recommended-stores"></div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+    $("#recommendation-form").submit(function(e) {
+        e.preventDefault();
+
+        var location = $("#location").val().split(' ').map(Number);
+        var interests = $("#interests").val().split(',');
+        var distance_limit = Number($("#distance_limit").val());
+
+        $.ajax({
+            url: '/recommend_store/',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                'user_location': location,
+                'user_interests': interests,
+                'distance_limit': distance_limit
+            }),
+            dataType: 'json',
+            headers: {'X-CSRFToken': '{{csrf_token}}'},
+            success: function(data) {
+                var storesDiv = $("#recommended-stores");
+                storesDiv.empty();
+                data.recommended_stores.forEach(function(store) {
+                    storesDiv.append('<p>' + store.name + ', ' + store.location + ', ' + store.category + '</p>');
+                });
+            }
+        });
+    });
+    </script>
+</body>
+</html>

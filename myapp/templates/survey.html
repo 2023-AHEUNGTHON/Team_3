@@ -1,37 +1,42 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>설문조사</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survey</title>
 </head>
 <body>
-    <h1>나의 관심 분야를 고르세요</h1>
-    <form id="survey-form">
-        <input type="checkbox" id="fashion" name="interest" value="1">
-        <label for="fashion">패션</label><br>
-        <input type="checkbox" id="exercise" name="interest" value="2">
-        <label for="exercise">운동</label><br>
-        <input type="checkbox" id="furniture" name="interest" value="3">
-        <label for="furniture">가구</label><br>
-        <input type="submit" value="제출">
+    <h1>mbti</h1>
+    <form id="surveyForm">
+        {% csrf_token %}
+        <input type="checkbox" id="happy" name="answers[]" value="E">
+        <label for="happy">헐 너무 좋아. 지금 당장 나감</label><br>
+        <input type="checkbox" id="ready" name="answers[]" value="I">
+        <label for="ready">아ㅎㅎ 마음의 준비가 필요할 것 같아...ㅎ..;</label><br>
+        <input type="button" value="제출" onclick="submitAnswer(1)">
     </form>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
-    $("#survey-form").submit(function(e) {
-        e.preventDefault();
-        
-        var selectedInterests = $("input:checkbox[name=interest]:checked").map(function(){
-            return $(this).val();
-        }).get();
-        
-        $.ajax({
-            url: '/survey',  
-            type: 'POST', 
-            contentType: 'application/json', 
-            data: JSON.stringify({ 'interest': selectedInterests }), 
-            dataType: 'json'
-        });
-    });
+        function submitAnswer(questionId) {
+            var selectedAnswer = $("input:checkbox[name='answers[]']:checked").val();
+
+            //Ajax로 서버에 선택한 답변 전송
+            $.ajax({
+                url: '/survey/',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ 'answers': { [questionId]: selectedAnswer } }), // 질문 ID와 선택한 답변을 전송
+                dataType: 'json',
+                success: function(data) {
+                    alert(data.message);
+                    //서버응답에 따라서
+                }
+            });
+        }
     </script>
 </body>
 </html>
+
+
+
