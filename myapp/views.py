@@ -4,8 +4,64 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from django.utils.decorators import method_decorator
 import json
-from myapp.models import Category
+from myapp.models import Category, popup
 import math
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from .serilalizers import popup_serilalizer
+
+#mbti별로 팝업스토어 나누기
+class ResultView(APIView):
+    def get(self, request):
+        return render(request, 'result.html', {'popup':None})
+    def post(self, request):
+        data = request.data
+        result = "".join(data['result'])
+
+        #render로 사용자에게 정보 보여주기
+        try:
+            popup_store = popup.objects.get(mbti=result)
+            serializer = popup_serializer(popup_store)
+            return render(request, 'result.html', {'popup': serializer.data})
+        except popup.DoesNotExist:
+            return render(request, 'result.html', {'popup': None})
+
+        if result == 'ENFP':
+            popup = popup.objects.get(id=1)
+        elif result == 'ENFJ':
+            popup = popup.objects.get(id=2)
+        elif result == 'ENTP':
+            popup = popup.objects.get(id=3)
+        elif result == 'ENTJ':
+            popup = popup.objects.get(id=4)
+        elif result == 'ESFP':
+            popup = popup.objects.get(id=5)  
+        elif result == 'ESFJ':
+            popup = popup.objects.get(id=6)
+        elif result == 'ESTP':
+            popup = popup.objects.get(id=7)
+        elif result == 'ESTJ':
+            popup = popup.objects.get(id=8)
+        elif result == 'INFP':
+            popup = popup.objects.get(id=9)
+        elif result == 'INFJ':
+            popup = popup.objects.get(id=10)
+        elif result == 'INTP':
+            popup = popup.objects.get(id=11)
+        elif result == 'INTJ':
+            popup = popup.objects.get(id=12)
+        elif result == 'ISFJ':
+            popup = popup.objects.get(id=13)
+        elif result == 'ISTP':
+            popup = popup.objects.get(id=14)
+        elif result == 'ISTJ':
+            popup = popup.objects.get(id=15)
+        elif result == 'ISFP':
+            popup = popup.objects.get(id=16)
+
+        '''
+        serializer = popup_serilalizer(popup)
+        return Response(serializer.data) '''
 
 def home(request):
     return render(request, 'home.html')  # 'home.html'은 홈페이지 템플릿 파일입니다.
@@ -14,11 +70,6 @@ def category_list(request):
     categories = Category.objects.all()
     return render(request, 'categories.html', {'categories': categories})
 
-interest_mapping = {
-    "1": "패션",
-    "2": "운동",
-    "3": "가구"
-}
 
 class SurveyView(View):
     questions = [
@@ -84,23 +135,18 @@ class SurveyView(View):
         #print(f"Calculated MBTI: {mbti}")
         return mbti
 
+
+
+
+
+
+
+
 def calculate_distance(user_location, store_location):
     x_diff = user_location[0] - store_location[0]
     y_diff = user_location[1] - store_location[1]
     
     return math.sqrt(x_diff**2 + y_diff**2)
-
-stores = [
-    {"name": "나이키", "location": (37.5665, 126.9780), "category": "패션"},
-    {"name": "KBO", "location": (34.5665, 12.9780), "category": "야구"},
-    {"name": "블랙핑크", "location": (2.523665, 1263.9780), "category": "음악"},
-    {"name": "파이참", "location": (2987.5665, 16.9780), "category": "IT"},
-    {"name": "롤", "location": (210039.5665, 209.9780), "category": "게임"},
-    {"name": "유럽 여행", "location": (3733.5665, 1216.9780), "category": "여행"},
-    {"name": "아디다스", "location": (0.5665, 47.9780), "category": "패션"},
-    {"name": "엽떡", "location": (3991.5765, 3.9880), "category": "음식"},
-    {"name": "시몬스", "location": (1.5865, 1.9980), "category": "가구"},
-]
 
 @method_decorator(csrf_exempt, name='dispatch')
 class StoreRecommendationView(View):

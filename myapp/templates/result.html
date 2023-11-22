@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Popup Store Information</title>
+</head>
+<body>
+    {% if popup %}
+        <h1>{{ popup.name }}</h1>
+        <p><strong>Location:</strong> {{ popup.location }}</p>
+        <p><strong>Time:</strong> {{ popup.time }}</p>
+        <p><strong>Website:</strong> <a href="{{ popup.website }}" target="_blank">{{ popup.website }}</a></p>
+        {% if popup.popup_image %}
+            <img src="{{ popup.popup_image.url }}" alt="{{ popup.name }} Image">
+        {% endif %}
+    {% else %}
+        <p>No popup store information available for the selected MBTI.</p>
+    {% endif %}
+</body>
+</html>
