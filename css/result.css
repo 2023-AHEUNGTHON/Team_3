@@ -1,0 +1,111 @@
+@font-face {
+    font-family: 'SEBANG_Gothic_Bold';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2104@1.0/SEBANG_Gothic_Bold.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'GongGothicMedium';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10@1.0/GongGothicMedium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+.sebang-font{
+    font-family: 'SEBANG_Gothic_Bold', sans-serif;
+}
+.gong-font{
+    font-family: 'GongGothicMedium',sans-serif;
+}
+
+.display-container{
+    max-width: 400px;
+    min-height: 100vh;
+    margin-left:auto;
+    margin-right:auto;
+    background-color: #ffffff12;
+    overflow: hidden;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em, rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
+}
+.back-btn button{
+    border:none;
+    background-color: transparent;
+    padding:20px;
+}
+.main-sub{
+    margin-top:15px;
+    font-size: 13px;
+}
+.main-title{
+    font-size: 24px;
+    margin-top:-8px;
+}
+.result-main img{
+    padding: 20px;
+    max-height: 250px;
+}
+.result-content{
+    margin-top: 20px;
+}
+.content-title{
+    position:relative;
+    font-size: 25px;
+    border-style: solid;
+    border-color:#16D99E;
+    width: 260px;
+    padding: 5px 0;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 15px;
+    color:#16D99E;
+    margin-bottom: -27px;
+    background-color: white;
+    z-index: 1;
+    box-shadow: rgba(0, 0, 0, 0.059) 0px 3px 6px, rgba(0, 0, 0, 0.108) 0px 3px 6px;
+}
+.content-all{
+    background-color: #E8FCF6;
+    padding:40px 0;
+    border-radius: 25px 25px 0 0;
+    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+}
+.content-sub{
+    margin-top: 20px;
+    background-color: white;
+    width:320px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 40px;
+    padding-bottom: 30px;
+    border-radius: 20px;
+}
+.btn-set{
+    margin-top: 20px;
+}
+.btn1, .btn2{
+    width:155px;
+    padding : 9px;
+    border:none;
+    border-radius: 10px;
+    background-color: #7FEACA80;
+    font-size: 15px;
+}
+.btn1{
+    margin-right: 10px;
+}
+.box1{
+    height: 1px;
+    background-color: #16D99E;
+    width:320px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top:30px
+}
+.map{
+    margin-left: auto;
+    margin-right: auto;
+}
+.footer{
+    margin-top:40px;
+    font-size: 12px;
+    color:#16d99e90;
+}

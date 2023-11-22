@@ -64,4 +64,9 @@
     color:rgb(20, 104, 79);
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
+.footer{
+    margin-top:40px;
+    font-size: 12px;
+    color:#16d99e90;
+}
 
