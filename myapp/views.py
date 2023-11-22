@@ -1,8 +1,8 @@
 from django.shortcuts import render
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
 from django.views import View
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt, csrf_protect
+from django.utils.decorators import method_decorator
 import json
 from myapp.models import Category
 import math
@@ -35,52 +35,55 @@ class SurveyView(View):
         {'id':11,'text': '열심히 준비한 일정에 차질이 생겼다.', 'choices':['J','P']},
         {'id':12,'text': '사전예약 팝업스토어에 가기 위해 나는', 'choices':['J','P']},
     ]
+
+    def recommended_popup(self, mbti):
+        if mbti and mbti[0] == 'E': #테스트용
+            return '푸바오'
+        else:
+            return '향수'
+
+        '''store_mapping = {
+            'ENFP': ['푸바오 팝업 스토어'],
+            #대충 나머지 추가.....하기...
+        }'''
+        #return store_mapping.get(mbti_result, [])
+
     def get(self, request):
         return render(request, 'survey.html',{'question':self.questions})
 
     @csrf_exempt
     def post(self, request):
-        data = json.loads(request, body)
-        user_answers = data.get('answers',{})
+        data = json.loads(request.body)
+        print(data)
+        user_answers = data.get('answers', [])
+        question_id = data.get('questionId')
 
         mbti = self.calculate_mbti(user_answers)
-        recommended_popup = self.recommend_popup(mbti)
+        recommended_popup = self.recommended_popup(mbti)
 
         return JsonResponse({
-            'message':f'결과: {mbt}',
+            'message':f'결과: {mbti}',
             'recommended_popup': recommended_popup
         })
 
     def calculate_mbti(self, user_answers):
         elements_counter = {'E': 0, 'I': 0, 'N': 0, 'S': 0, 'T': 0, 'F': 0, 'J': 0, 'P': 0}
 
-        for question_id, answer_elements in user_answers.items():
+        for answer in user_answers:
+            question_id = answer.get('name')
+            if question_id == 'csrfmiddlewaretoken': #토큰 제외시키기
+                continue
+            answer_elements = answer.get('value')
             elements_counter[answer_elements] += 1
 
         mbti = ''
         for element, count in elements_counter.items():
-            if count >=2:
+            if count >= 2:
                 mbti += element
 
+        #print(f"Calculated MBTI: {mbti}")
         return mbti
 
-
-
-    def get_recommended_stores(self, mbti_result):
-        store_mapping = {
-            'ENFP': ['푸바오 팝업 스토어'],
-            #대충 나머지 추가.....하기...
-        }
-
-        return store_mapping.get(mbti_result, [])
-'''
-    @csrf_exempt
-    def post(self, request):
-        data = json.loads(request.body)
-        interest_numbers = data.get('interest', [])
-        interests = [interest_mapping.get(n, '알 수 없는 관심사항') for n in interest_numbers]
-        return JsonResponse({'message': f'설문조사 결과를 성공적으로 받았습니다. 관심사항: {interests}'})
-'''
 def calculate_distance(user_location, store_location):
     x_diff = user_location[0] - store_location[0]
     y_diff = user_location[1] - store_location[1]
@@ -118,7 +121,3 @@ class StoreRecommendationView(View):
     
     def get(self, request, *args, **kwargs):
         return render(request, 'recommend_store.html')
-
-
-#todo 프론트에서 설문조사 완료한 데이터 가져오기
-# //  코드 내부 팀 주제와 기능에 맞게 수정하기

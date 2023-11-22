@@ -19,15 +19,26 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         function submitAnswer(questionId) {
-            var selectedAnswer = $("input:checkbox[name='answers[]']:checked").val();
-
+            var csrfToken = $('[name=csrfmiddlewaretoken]').val();
+            var selectedAnswer = $("form#surveyForm").serializeArray();
+    
+            console.log('Selected Answer:', selectedAnswer);  // 추가된 로그 출력
+    
+            var dataToSend = {
+                'answers': selectedAnswer,
+                'questionId': questionId,
+            };
+    
             //Ajax로 서버에 선택한 답변 전송
             $.ajax({
                 url: '/survey/',
                 type: 'POST',
                 contentType: 'application/json',
-                data: JSON.stringify({ 'answers': { [questionId]: selectedAnswer } }), // 질문 ID와 선택한 답변을 전송
+                data: JSON.stringify(dataToSend),
                 dataType: 'json',
+                headers: { 'X-CSRFToken': csrfToken,
+                           'X-Requested-With': 'XMLHttpRequest', 
+                },
                 success: function(data) {
                     alert(data.message);
                     //서버응답에 따라서
