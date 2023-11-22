@@ -77,6 +77,8 @@
     padding-top: 40px;
     padding-bottom: 30px;
     border-radius: 20px;
+    padding-left: 25px;
+    padding-right: 25px;
 }
 .btn-set{
     margin-top: 20px;
@@ -108,4 +110,8 @@
     margin-top:40px;
     font-size: 12px;
     color:#16d99e90;
+}
+a {
+    text-decoration-line: none !important;
+    color:#16D99E !important;
 }
