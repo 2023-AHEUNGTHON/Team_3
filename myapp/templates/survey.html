@@ -1,53 +1,48 @@
+{% load static %}
+{% csrf_token %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Survey</title>
+    <title>POPTI</title>
+    <link rel="stylesheet" href="{% static 'css/question.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
 </head>
-<body>
-    <h1>mbti</h1>
-    <form id="surveyForm">
-        {% csrf_token %}
-        <input type="checkbox" id="happy" name="answers[]" value="E">
-        <label for="happy">헐 너무 좋아. 지금 당장 나감</label><br>
-        <input type="checkbox" id="ready" name="answers[]" value="I">
-        <label for="ready">아ㅎㅎ 마음의 준비가 필요할 것 같아...ㅎ..;</label><br>
-        <input type="button" value="제출" onclick="submitAnswer(1)">
-    </form>
 
+<body>
+    <div class="display-container">
+        <div class="num-wrap">
+            <p id="changeNum" class="changeNum">01</p>
+            <p class="fixNum">/12</p>
+        </div>
+        <div class="question-wrap">
+            <p id="title" class="questionMain">친구한테 갑자기 놀자는 전화가 올 때의 나는?</p>
+
+            <input id="type" type="hidden" value="EI">
+
+            <img id="img" class="imgArea" src="{% static 'img/1.png' %}" alt="">
+
+            <div class="button-wrap">
+                <button id="A" type="button">Primary</button>
+                <button id="B" type="button">Primary</button>
+            </div>
+        </div>
+    </div>
+
+    <input type="hidden" id="EI" value="0">
+    <input type="hidden" id="SN" value="0">
+    <input type="hidden" id="TF" value="0">
+    <input type="hidden" id="JP" value="0">
+
+    <script src="{% static 'js/data.js' %}"></script>
+    <script src="{% static 'js/question.js' %}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script>
-        function submitAnswer(questionId) {
-            var csrfToken = $('[name=csrfmiddlewaretoken]').val();
-            var selectedAnswer = $("form#surveyForm").serializeArray();
-    
-            console.log('Selected Answer:', selectedAnswer);  // 추가된 로그 출력
-    
-            var dataToSend = {
-                'answers': selectedAnswer,
-                'questionId': questionId,
-            };
-    
-            //Ajax로 서버에 선택한 답변 전송
-            $.ajax({
-                url: '/survey/',
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(dataToSend),
-                dataType: 'json',
-                headers: { 'X-CSRFToken': csrfToken,
-                           'X-Requested-With': 'XMLHttpRequest', 
-                },
-                success: function(data) {
-                    alert(data.message);
-                    //서버응답에 따라서
-                }
-            });
-        }
-    </script>
+    <input type="hidden" id="userMbti" value="">
 </body>
-</html>
 
 
 

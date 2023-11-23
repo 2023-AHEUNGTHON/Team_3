@@ -5,7 +5,8 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
-class popup(models.Model):
+        
+class Popup(models.Model):
     mbti = models.CharField(max_length=4, unique=True)
     name = models.CharField(max_length=150)
     location = models.TextField()

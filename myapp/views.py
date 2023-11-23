@@ -4,64 +4,36 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from django.utils.decorators import method_decorator
 import json
-from myapp.models import Category, popup
+from myapp.models import Category, Popup
 import math
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serilalizers import popup_serilalizer
 
 #mbti별로 팝업스토어 나누기
-class ResultView(APIView):
+class ResultView(View):
     def get(self, request):
         return render(request, 'result.html', {'popup':None})
     def post(self, request):
-        data = request.data
-        result = "".join(data['result'])
+        mbti = request.POST.get('mbti', '')
+        print(f"MBTI: {mbti}")
+        '''data = request.data
+        result = "".join(data['result'])'''
 
         #render로 사용자에게 정보 보여주기
         try:
-            popup_store = popup.objects.get(mbti=result)
-            serializer = popup_serializer(popup_store)
-            return render(request, 'result.html', {'popup': serializer.data})
+            popup_store = popup.objects.get(mbti=user_mbti)
+            serializer_data = {
+                'name': popup.name,
+                'location': popup.location,
+                'time': popup.time,
+                'website': popup.website,
+                'popup_image': popup.popup_image.url if popup.popup_image else None,
+            }
+            return render(request, 'result.html', {'popup': serializer_data})
         except popup.DoesNotExist:
             return render(request, 'result.html', {'popup': None})
 
-        if result == 'ENFP':
-            popup = popup.objects.get(id=1)
-        elif result == 'ENFJ':
-            popup = popup.objects.get(id=2)
-        elif result == 'ENTP':
-            popup = popup.objects.get(id=3)
-        elif result == 'ENTJ':
-            popup = popup.objects.get(id=4)
-        elif result == 'ESFP':
-            popup = popup.objects.get(id=5)  
-        elif result == 'ESFJ':
-            popup = popup.objects.get(id=6)
-        elif result == 'ESTP':
-            popup = popup.objects.get(id=7)
-        elif result == 'ESTJ':
-            popup = popup.objects.get(id=8)
-        elif result == 'INFP':
-            popup = popup.objects.get(id=9)
-        elif result == 'INFJ':
-            popup = popup.objects.get(id=10)
-        elif result == 'INTP':
-            popup = popup.objects.get(id=11)
-        elif result == 'INTJ':
-            popup = popup.objects.get(id=12)
-        elif result == 'ISFJ':
-            popup = popup.objects.get(id=13)
-        elif result == 'ISTP':
-            popup = popup.objects.get(id=14)
-        elif result == 'ISTJ':
-            popup = popup.objects.get(id=15)
-        elif result == 'ISFP':
-            popup = popup.objects.get(id=16)
-
-        '''
-        serializer = popup_serilalizer(popup)
-        return Response(serializer.data) '''
 
 def home(request):
     return render(request, 'home.html')  # 'home.html'은 홈페이지 템플릿 파일입니다.
@@ -87,18 +59,6 @@ class SurveyView(View):
         {'id':12,'text': '사전예약 팝업스토어에 가기 위해 나는', 'choices':['J','P']},
     ]
 
-    def recommended_popup(self, mbti):
-        if mbti and mbti[0] == 'E': #테스트용
-            return '푸바오'
-        else:
-            return '향수'
-
-        '''store_mapping = {
-            'ENFP': ['푸바오 팝업 스토어'],
-            #대충 나머지 추가.....하기...
-        }'''
-        #return store_mapping.get(mbti_result, [])
-
     def get(self, request):
         return render(request, 'survey.html',{'question':self.questions})
 
@@ -108,15 +68,59 @@ class SurveyView(View):
         print(data)
         user_answers = data.get('answers', [])
         question_id = data.get('questionId')
+        result = data.get('result', '')
 
         mbti = self.calculate_mbti(user_answers)
         recommended_popup = self.recommended_popup(mbti)
 
         return JsonResponse({
             'message':f'결과: {mbti}',
-            'recommended_popup': recommended_popup
+            'recommended_popup': recommended_popup,
+            'id':id
         })
 
+    def recommended_popup(self, result):
+        popup = None
+        mbti_mapping = {
+                'ENFP': 1,
+                'ENFJ': 2,
+                'ENTP': 3,
+                'ENTJ': 4,
+                'ESFP': 5,
+                'ESFJ': 6,
+                'ESTP': 7,
+                'ESTJ': 8,
+                'INFP': 9,
+                'INFJ': 10,
+                'INTP': 11,
+                'INTJ': 12,
+                'ISFJ': 13,
+                'ISTP': 14,
+                'ISTJ': 15,
+                'ISFP': 16,
+            }
+        
+        if result in mbti_mapping:
+            popup = Popup.objects.get(id=mbti_mapping[result])
+
+        if popup:
+            serialized_data = {
+                'mbti': popup.mbti,
+                'name': popup.name,
+                'location': popup.location,
+                'time': popup.time,
+                'website': popup.website,
+                'popup_image': popup.popup_image.url if popup.popup_image else None,
+                'id': popup.id,
+            }
+
+        return JsonResponse(serialized_data)
+        #serializer = popup_serilalizer(popup)
+        #return render(self.request, 'result.html', {'popup':serializer.data, 'id':id}) 
+        #return JsonResponse({'popup':serialized_data, 'id':popup.id})
+        #return render('result.html', {'id':id})
+
+#mbti계산 함수
     def calculate_mbti(self, user_answers):
         elements_counter = {'E': 0, 'I': 0, 'N': 0, 'S': 0, 'T': 0, 'F': 0, 'J': 0, 'P': 0}
 
