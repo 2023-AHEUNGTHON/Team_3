@@ -5,10 +5,12 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
-        
+
 class Popup(models.Model):
     mbti = models.CharField(max_length=4, unique=True)
     name = models.CharField(max_length=150)
+    info = models.TextField()
+    etc = models.TextField()
     location = models.TextField()
     time = models.CharField(max_length=100)
     website = models.URLField()
