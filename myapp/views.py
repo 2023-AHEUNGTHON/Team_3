@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from django.utils.decorators import method_decorator
 import json
@@ -8,34 +8,40 @@ from myapp.models import Category, Popup
 import math
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serilalizers import popup_serilalizer
+from .serializers import Popupserializer
 
-#mbti별로 팝업스토어 나누기
+#mbti별로 팝업스토어 나눈 거 보이도록
 class ResultView(View):
+    @csrf_exempt
     def get(self, request):
-        return render(request, 'result.html', {'popup':None})
+            popups = Popup.objects.all()
+            serializer = PopupSerializer(popups, many=True)
+            serialized_data = serializer.data
+            return JsonResponse({'popup_stores': serialized_data}, json_dumps_params={'ensure_ascii': False})
+        
+    @csrf_exempt
     def post(self, request):
-        '''mbti = request.POST.get('mbti', '')
-        print(f"MBTI: {mbti}")
-        data = request.data
-        result = "".join(data['result'])'''
-
-        #render로 사용자에게 정보 보여주기
         try:
             data = json.loads(request.body)
             mbti = data.get('mbti', '')
             print(f"MBTI: {mbti}")
             popup_store = Popup.objects.get(mbti=mbti)
-            serializer_data = {
-                'name': popup_store.name,
-                'location': popup_store.location,
-                'time': popup_store.time,
-                'website': popup_store.website,
-                'popup_image': popup_store.popup_image.url if popup_store.popup_image else None,
-            }
-            return render(request, 'result.html', {'popup_store': serializer_data, 'mbti': mbti})
+            
+            serializer = Popupserializer(popup_store)
+            serialized_data = serializer.data
+
+            return JsonResponse({'popup_store': serialized_data})
         except Popup.DoesNotExist:
-            return render(request, 'result.html', {'popup': None})
+            return JsonResponse({'error': 'No popup store information available for the selected MBTI.'}, status=404)
+
+    def get(self, request):
+        popups = Popup.objects.all()
+        serializer = Popupserializer(popups, many=True)
+        serialized_data = serializer.data
+        json_data = json.dumps({'popup_stores': serialized_data}, ensure_ascii=False)
+        return HttpResponse(json_data, content_type='application/json')
+
+
 
 
 class SurveyView(View):
@@ -63,11 +69,14 @@ class SurveyView(View):
         print(data)
         #user_answers = data.get('answers', [])
         #question_id = data.get('questionId')
-        result = data.get('result', '') 
+        result = data.get('result')
+        if result is None:
+            print(result)
+            return JsonResponse({'message': 'Result not provided.'})
 
         mbti = result
         recommended_popup_data = self.recommended_popup(mbti)
-
+        print(result)
         return JsonResponse({
             'message':f'결과: {mbti}',
             'recommended_popup': [recommended_popup_data],
@@ -105,14 +114,19 @@ class SurveyView(View):
             'popup_image': None,
             'id': None,
         }
-
+        print("mbti_mapping:", mbti_mapping)
+        print("Result MBTI:", result)
         popup_id = mbti_mapping.get(result)
+        print("Popup ID: ", popup_id)
 
         if popup_id is not None:
             try:
                 popup = Popup.objects.get(id=popup_id)
             except Popup.DoesNotExist:
-                pass
+                print(f"Popup with id {popup_id} does not exist.")
+        else:
+            print(f"Invalid mbti value: {result}")
+
 
         if popup:
             serialized_data = {
@@ -124,7 +138,7 @@ class SurveyView(View):
                 'popup_image': popup.popup_image.url if popup.popup_image else None,
                 'id': popup.id,
             }
-
+        print(serialized_data)
         return serialized_data
         #serializer = popup_serilalizer(popup)
         #return render(self.request, 'result.html', {'popup':serializer.data, 'id':id}) 
