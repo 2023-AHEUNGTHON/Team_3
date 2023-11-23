@@ -15,32 +15,27 @@ class ResultView(View):
     def get(self, request):
         return render(request, 'result.html', {'popup':None})
     def post(self, request):
-        mbti = request.POST.get('mbti', '')
+        '''mbti = request.POST.get('mbti', '')
         print(f"MBTI: {mbti}")
-        '''data = request.data
+        data = request.data
         result = "".join(data['result'])'''
 
         #render로 사용자에게 정보 보여주기
         try:
-            popup_store = popup.objects.get(mbti=user_mbti)
+            data = json.loads(request.body)
+            mbti = data.get('mbti', '')
+            print(f"MBTI: {mbti}")
+            popup_store = Popup.objects.get(mbti=mbti)
             serializer_data = {
-                'name': popup.name,
-                'location': popup.location,
-                'time': popup.time,
-                'website': popup.website,
-                'popup_image': popup.popup_image.url if popup.popup_image else None,
+                'name': popup_store.name,
+                'location': popup_store.location,
+                'time': popup_store.time,
+                'website': popup_store.website,
+                'popup_image': popup_store.popup_image.url if popup_store.popup_image else None,
             }
-            return render(request, 'result.html', {'popup': serializer_data})
-        except popup.DoesNotExist:
+            return render(request, 'result.html', {'popup_store': serializer_data, 'mbti': mbti})
+        except Popup.DoesNotExist:
             return render(request, 'result.html', {'popup': None})
-
-
-def home(request):
-    return render(request, 'home.html')  # 'home.html'은 홈페이지 템플릿 파일입니다.
-    
-def category_list(request):
-    categories = Category.objects.all()
-    return render(request, 'categories.html', {'categories': categories})
 
 
 class SurveyView(View):
@@ -66,17 +61,17 @@ class SurveyView(View):
     def post(self, request):
         data = json.loads(request.body)
         print(data)
-        user_answers = data.get('answers', [])
-        question_id = data.get('questionId')
-        result = data.get('result', '')
+        #user_answers = data.get('answers', [])
+        #question_id = data.get('questionId')
+        result = data.get('result', '') 
 
-        mbti = self.calculate_mbti(user_answers)
-        recommended_popup = self.recommended_popup(mbti)
+        mbti = result
+        recommended_popup_data = self.recommended_popup(mbti)
 
         return JsonResponse({
             'message':f'결과: {mbti}',
-            'recommended_popup': recommended_popup,
-            'id':id
+            'recommended_popup': [recommended_popup_data],
+            'id': recommended_popup_data['id'] if recommended_popup_data else None
         })
 
     def recommended_popup(self, result):
@@ -98,10 +93,26 @@ class SurveyView(View):
                 'ISTP': 14,
                 'ISTJ': 15,
                 'ISFP': 16,
-            }
-        
-        if result in mbti_mapping:
-            popup = Popup.objects.get(id=mbti_mapping[result])
+        }
+        #초기화
+        json.dumps(str(Popup.popup_image))
+        serialized_data = {
+            'mbti': None,
+            'name': None,
+            'location': None,
+            'time': None,
+            'website': None,
+            'popup_image': None,
+            'id': None,
+        }
+
+        popup_id = mbti_mapping.get(result)
+
+        if popup_id is not None:
+            try:
+                popup = Popup.objects.get(id=popup_id)
+            except Popup.DoesNotExist:
+                pass
 
         if popup:
             serialized_data = {
@@ -114,7 +125,7 @@ class SurveyView(View):
                 'id': popup.id,
             }
 
-        return JsonResponse(serialized_data)
+        return serialized_data
         #serializer = popup_serilalizer(popup)
         #return render(self.request, 'result.html', {'popup':serializer.data, 'id':id}) 
         #return JsonResponse({'popup':serialized_data, 'id':popup.id})
@@ -145,6 +156,14 @@ class SurveyView(View):
 
 
 
+
+
+def home(request):
+    return render(request, 'home.html')  # 'home.html'은 홈페이지 템플릿 파일입니다.
+    
+def category_list(request):
+    categories = Category.objects.all()
+    return render(request, 'categories.html', {'categories': categories})
 
 def calculate_distance(user_location, store_location):
     x_diff = user_location[0] - store_location[0]
