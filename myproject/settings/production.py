@@ -4,6 +4,6 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['*', '3.37.80.159']
 
-STATIC_ROOT = BASE_DIR / 'static'
+STATIC_ROOT = BASE_DIR / 'myapp' / 'static'
 
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = BASE_DIR / 'popup_store_images'
