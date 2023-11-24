@@ -1,6 +1,6 @@
 from django.contrib import admin
-from .models import Category, popup
+from .models import Category, Popup
 from django.contrib.auth.admin import UserAdmin
 
 admin.site.register(Category)
-admin.site.register(popup)
+admin.site.register(Popup)
