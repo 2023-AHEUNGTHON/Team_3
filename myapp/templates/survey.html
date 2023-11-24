@@ -24,7 +24,7 @@
 
             <input id="type" type="hidden" value="EI">
 
-            <img id="img" class="imgArea" src="{% static 'myapp/img/1.png' %}" alt="">
+            <img class="imgArea" src="{% static 'myapp/img/1.png' %}" alt="">
             
             <div class="button-wrap">
                 <form id="surveyForm">
@@ -36,7 +36,6 @@
                     <input type="button" value="제출" onclick="submitAnswer(1)">
                 </form>
             </div>
-
         </div>
     </div>
 
@@ -48,6 +47,37 @@
     <script src="{% static 'myapp/js/data.js' %}"></script>
     <script src="{% static 'myapp/js/question.js' %}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
+    <script>
+        function submitAnswer(questionId) {
+            var csrfToken = $('[name=csrfmiddlewaretoken]').val();
+            var selectedAnswer = $("form#surveyForm").serializeArray();
+
+            console.log('Selected Answer:', selectedAnswer);  // 추가된 로그 출력
+
+            var dataToSend = {
+                'answers': selectedAnswer,
+                'questionId': questionId,
+            };
+
+            //Ajax로 서버에 선택한 답변 전송
+            $.ajax({
+                url: '/survey/',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(dataToSend),
+                dataType: 'json',
+                headers: { 'X-CSRFToken': csrfToken,
+                           'X-Requested-With': 'XMLHttpRequest', 
+                },
+                success: function(data) {
+                    alert(data.message);
+                    //서버응답에 따라서
+                }
+            });
+        }
+    </script>
+    
     <input type="hidden" id="userMbti" value="">
 </body>
 
