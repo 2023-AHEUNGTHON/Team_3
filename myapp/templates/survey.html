@@ -25,11 +25,18 @@
             <input id="type" type="hidden" value="EI">
 
             <img id="img" class="imgArea" src="{% static 'myapp/img/1.png' %}" alt="">
-
+            
             <div class="button-wrap">
-                <button id="A" type="button">Primary</button>
-                <button id="B" type="button">Primary</button>
+                <form id="surveyForm">
+                    {% csrf_token %}
+                    <input type="checkbox" id="happy" name="answers[]" value="E">
+                    <label for="happy">헐 너무 좋아. 지금 당장 나감</label><br>
+                    <input type="checkbox" id="ready" name="answers[]" value="I">
+                    <label for="ready">아ㅎㅎ 마음의 준비가 필요할 것 같아...ㅎ..;</label><br>
+                    <input type="button" value="제출" onclick="submitAnswer(1)">
+                </form>
             </div>
+
         </div>
     </div>
 
@@ -38,8 +45,8 @@
     <input type="hidden" id="TF" value="0">
     <input type="hidden" id="JP" value="0">
 
-    <script src="{% static 'js/data.js' %}"></script>
-    <script src="{% static 'js/question.js' %}"></script>
+    <script src="{% static 'myapp/js/data.js' %}"></script>
+    <script src="{% static 'myapp/js/question.js' %}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <input type="hidden" id="userMbti" value="">
 </body>
