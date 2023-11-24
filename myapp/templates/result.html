@@ -1,50 +1,80 @@
+{% load static %}
 {% csrf_token %}
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Popup Store Information</title>
+    <title>POPTI</title>
+    <link rel="stylesheet" href="{% static 'css/result.css' %}">
+    <script src="../js/result.js" defer></script>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=93292f2b5a34b3ac5a3fa93118cf0be6"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 </head>
 <body>
     {% block content %}
-    <h1>Popup Stores</h1>
-  
-    {% for popup in popup_stores %}
-      <div>
-        <h2>{{ popup.name }}</h2>
-        <p><strong>Location:</strong> {{ popup.location }}</p>
-        <p><strong>Time:</strong> {{ popup.time }}</p>
-        <p>Info {{ popup.info }}</p>
-        <p>etc {{ popup.etc }}</p>
-        <p><strong>Website:</strong> <a href="{{ popup.website }}" target="_blank">{{ popup.website }}</a></p>
-        {% if popup.popup_image %}
-          <img src="{{ popup.popup_image }}" alt="{{ popup.name }} Image">
-        {% endif %}
-      </div>
-    {% endfor %}
-  {% endblock %}
-    
-    
+    <div class="display-container">
+        <div class="back-btn">
+            <a href="{% url 'home' %}"><button>
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi-arrow bi-arrow-left-short" viewBox="0 0 16 16" color="#16D99E">
+                <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"/>
+              </svg>
+            </button></a>
+        </div>
+        {% for popup in popup_stores %}
+        <div class="result-main text-center">
+            <p class="main-sub gong-font">POPTI가 추천하는 최고의 팝업스토어는 ...</p>
+            <p class="main-title sebang-font">{{ popup.info }}</p>
+            <div class="main-img">
+                {% if popup.popup_image %}
+                <img src="{{ popup.popup_image }}" alt="{{ popup.name }} Image">
+                {% endif %}
+            </div>
+        </div>
+        <div class="result-content text-center">
+            <p class="content-title sebang-font">{{ popup.name }}</p>
+            <div class="content-all">
+                <div class="content-sub gong-font">
+                    <p>위치 : {{ popup.location }}</p>
+                    <p>시간 : {{ popup.time }}</p>
+                    <p>{{ popup.etc }}<br/>
+                        <a href="{{ popup.website }}" target='_blank'>예약 링크</a></p>
+                    <p><a href="{{ popup.website }}" target='_blank'>인스타그램</a></p>
+                </div>
+                <div class="btn-set text-center d-flex justify-content-center">
+                    <a href="{% url 'survey' %}"><button class="btn1 gong-font">다시 검사하기</button></a><br/>
+                    <a href="#"><button class="btn2 gong-font">같이 갈 친구 구하기</button></a>
+                </div>
+                <div class="box1"></div>
+                <div class="map" id="map" style="width:320px;height:300px;">
+                    <script>
+                        var container = document.getElementById('map'); 
+                        var options = { 
+                            center: new kakao.maps.LatLng(37.5484025,127.0424599), 
+                            level: 3 
+                        };
+
+                        var map = new kakao.maps.Map(container, options); 
+                        var markerPosition  = new kakao.maps.LatLng(37.5484025,127.0424599); 
+                        var marker = new kakao.maps.Marker({
+                          position: markerPosition,
+                          clickable: true
+                      });
+                      marker.setMap(map);
+                      kakao.maps.event.addListener(marker, 'click', function() {
+                        window.open("https://map.kakao.com/link/map/37.5484025,127.0424599", '_blank'); 
+                  });
+                    </script>
+                </div>
+                {% endfor %}
+                {% endblock %}
+                <div class="footer text-center sebang-font">
+                    <p>어흥해커톤 일석삼조</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
-</html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
