@@ -34,7 +34,7 @@
 
 ---
 
-## Stacks 🐈 (여러분들이 사용하신 스택을 적어주세요!)
+## Stacks 🐈
 
 ### Environment
 ![Visual Studio Code](https://img.shields.io/badge/Visual%20Studio%20Code-007ACC?style=for-the-badge&logo=Visual%20Studio%20Code&logoColor=white)
