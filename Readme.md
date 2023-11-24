@@ -5,7 +5,7 @@
 
 </div>
 
-# 프로젝트명
+# POPTI
 > **개발기간: 2023.11.15 ~ 2023.11.24**
 
 ## 배포 주소
@@ -19,13 +19,13 @@
 |      정의민       |          박서연         |       신민서         |                                                                                                               
 | :------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | 
 |   <img width="160px" src="https://github.com/2023-AHEUNGTHON/Team_1/assets/94633589/f7f60b7b-6a04-41e8-a38f-8cd619fd6e4a" > |             <img width="160px" src="https://github.com/2023-AHEUNGTHON/Team_1/assets/94633589/f7f60b7b-6a04-41e8-a38f-8cd619fd6e4a" >    |                 <img width="160px" src="https://github.com/2023-AHEUNGTHON/Team_1/assets/94633589/f7f60b7b-6a04-41e8-a38f-8cd619fd6e4a" >   |
-|   [@2023-AHEUNGTHON](https://github.com/2023-AHEUNGTHON)   |    [@2023-AHEUNGTHON](https://github.com/2023-AHEUNGTHON)  | [@2023-AHEUNGTHON](https://github.com/2023-AHEUNGTHON)  |
+|   [@euimin-118](https://github.com/euimin-118)   |    [@yxoni](https://github.com/yxoni)  | [@minseo121](https://github.com/minseo121)  |
 | 숭실대학교 무역학과 4학년 | 상명대학교 컴퓨터과학전공 3학년 | 성결대학교 미디어소프트웨어학과 2학년 |
 
 |      김승언       |          김현수         |       송준용         |                                                                                                               
 | :------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | 
 |   <img width="160px" src="https://github.com/2023-AHEUNGTHON/Team_1/assets/94633589/f7f60b7b-6a04-41e8-a38f-8cd619fd6e4a" > |             <img width="160px" src="https://github.com/2023-AHEUNGTHON/Team_1/assets/94633589/f7f60b7b-6a04-41e8-a38f-8cd619fd6e4a" >    |                 <img width="160px" src="https://github.com/2023-AHEUNGTHON/Team_1/assets/94633589/f7f60b7b-6a04-41e8-a38f-8cd619fd6e4a" >   |
-|   [@2023-AHEUNGTHON](https://github.com/2023-AHEUNGTHON)   |    [@2023-AHEUNGTHON](https://github.com/2023-AHEUNGTHON)  | [@2023-AHEUNGTHON](https://github.com/2023-AHEUNGTHON)  |
+|   [@tmdtmdqorekf](https://github.com/tmdtmdqorekf)   |    [@maeng-kim](https://github.com/maeng-kim)  | [@sssong5252](https://github.com/sssong5252)  |
 | 국민대학교 소프트웨어학과 3학년 | 성신여자대학교 컴퓨터공학과 2학년 | 성결대학교 컴퓨터공학과 1학년 |
 
 ## 프로젝트 소개
@@ -46,6 +46,16 @@
 ### Development
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=Javascript&logoColor=white)
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+
+<div align="center">
+  <img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white">
+  <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
+  <img src="https://img.shields.io/badge/css-1572B6?style=for-the-badge&logo=css3&logoColor=white">
+  <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
+  <img src="https://img.shields.io/badge/django-092E20?style=for-the-badge&logo=django&logoColor=white">
+  <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
+
+</div>
 
 ### Communication
 ![Notion](https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=Notion&logoColor=white)
