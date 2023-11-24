@@ -5,6 +5,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://POPTI.html">
+    <meta property="og:title" content="POPTI">
+    <meta property="og:description" content="나랑 여기 가자!">
+    {% if popup.popup_image %}
+    <meta property="og:image" content="{{ popup.popup_image }}">
+    {% endif %}
     <title>POPTI</title>
     <link rel="stylesheet" href="{% static 'myapp/css/result.css' %}">
     <script src="myapp/js/result.js" defer></script>
@@ -43,11 +50,20 @@
                 </div>
                 <div class="btn-set text-center d-flex justify-content-center">
                     <a href="{% url 'survey' %}"><button class="btn1 gong-font">다시 검사하기</button></a><br/>
-                    <a href="#"><button class="btn2 gong-font">같이 갈 친구 구하기</button></a>
+                    <button class="btn2 gong-font" onClick="copyUrl()">친구들에게 공유하기</button></a>
                 </div>
-                <div class="box1"></div>
-                <div class="map" id="map" style="width:320px;height:300px;">
-                    <script>
+                <div class="footer text-center sebang-font">
+                    <p>어흥해커톤 일석삼조</p>
+                </div>
+            </div>
+            <script>
+                /* 링크 복사 */
+                let nowUrl = window.location.href;
+                function copyUrl(){ 
+                        navigator.clipboard.writeText(nowUrl).then(res=>{
+                        alert("주소가 복사되었습니다!");
+                        })
+                }
                         var container = document.getElementById('map'); 
                         var options = { 
                             center: new kakao.maps.LatLng(37.5484025,127.0424599), 
