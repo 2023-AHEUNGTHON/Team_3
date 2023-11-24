@@ -9,16 +9,36 @@ import math
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializers import Popupserializer
+from django.core.serializers import serialize
+from rest_framework import serializers
+from rest_framework.renderers import TemplateHTMLRenderer
 
 #mbti별로 팝업스토어 나눈 거 보이도록
-class ResultView(View):
+class ResultView(APIView):
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'result.html'
+    
     @csrf_exempt
     def get(self, request):
-            popups = Popup.objects.all()
-            serializer = PopupSerializer(popups, many=True)
-            serialized_data = serializer.data
-            return JsonResponse({'popup_stores': serialized_data}, json_dumps_params={'ensure_ascii': False})
-        
+        popups = Popup.objects.all()
+        serialized_data = []
+
+        for popup in popups:
+            serialized_popup = {
+                'mbti': popup.mbti,
+                'name': popup.name,
+                'location': popup.location,
+                'time': popup.time,
+                'website': popup.website,
+                'popup_image': popup.popup_image.url if popup.popup_image else None,
+                'id': popup.id,
+                'info':popup.info,
+                'etc':popup.etc,
+            }
+            serialized_data.append(serialized_popup)
+
+        return Response({'popup_stores': serialized_data})
+
     @csrf_exempt
     def post(self, request):
         try:
@@ -33,14 +53,6 @@ class ResultView(View):
             return JsonResponse({'popup_store': serialized_data})
         except Popup.DoesNotExist:
             return JsonResponse({'error': 'No popup store information available for the selected MBTI.'}, status=404)
-
-    def get(self, request):
-        popups = Popup.objects.all()
-        serializer = Popupserializer(popups, many=True)
-        serialized_data = serializer.data
-        json_data = json.dumps({'popup_stores': serialized_data}, ensure_ascii=False)
-        return HttpResponse(json_data, content_type='application/json')
-
 
 
 
@@ -113,6 +125,8 @@ class SurveyView(View):
             'website': None,
             'popup_image': None,
             'id': None,
+            'info': None,
+            'etc':None,
         }
         print("mbti_mapping:", mbti_mapping)
         print("Result MBTI:", result)
@@ -137,6 +151,8 @@ class SurveyView(View):
                 'website': popup.website,
                 'popup_image': popup.popup_image.url if popup.popup_image else None,
                 'id': popup.id,
+                'info':popup.info,
+                'etc':popup.etc,
             }
         print(serialized_data)
         return serialized_data

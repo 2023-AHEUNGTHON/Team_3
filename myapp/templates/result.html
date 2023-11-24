@@ -5,80 +5,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Popup Store Information</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        #popupStoreInfo {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-
-        h1 {
-            color: #333;
-        }
-
-        p {
-            color: #555;
-            margin: 10px 0;
-        }
-
-        img {
-            max-width: 100%;
-            height: auto;
-            margin-top: 10px;
-        }
-
-        a {
-            color: #007bff;
-        }
-    </style>
 </head>
 <body>
-    <div id="popupStoreInfo"></div>
-
-    <script>
-document.addEventListener('DOMContentLoaded', function () {
-    fetch('/result/', {
-        method: 'GET',  // GET 요청으로 변경
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': '{{ csrf_token }}'
-        }
-    })
-        .then(response => response.json())
-        .then(data => {
-            const popupStoreInfoDiv = document.getElementById('popupStoreInfo');
-
-            if (data.popup_stores && data.popup_stores.length > 0) {
-                const popupStore = data.popup_stores[0];
-                popupStoreInfoDiv.innerHTML = `
-                    <h1>${popupStore.name}</h1>
-                    <p><strong>위치:</strong> ${popupStore.location}</p>
-                    <p><strong>영업 시간:</strong> ${popupStore.time}</p>
-                    <p><strong>웹사이트:</strong> <a href="${popupStore.website}" target="_blank">${popupStore.website}</a></p>
-                    ${popupStore.popup_image ? `<img src="${popupStore.popup_image}" alt="${popupStore.name} 이미지">` : ''}
-                `;
-            } else {
-                popupStoreInfoDiv.innerHTML = '<p>선택한 MBTI에 대한 팝업 스토어 정보가 없습니다.</p>';
-            }
-        })
-        .catch(error => console.error('데이터를 가져오는 도중 오류 발생:', error));
-});
-    </script>
+    {% block content %}
+    <h1>Popup Stores</h1>
+  
+    {% for popup in popup_stores %}
+      <div>
+        <h2>{{ popup.name }}</h2>
+        <p><strong>Location:</strong> {{ popup.location }}</p>
+        <p><strong>Time:</strong> {{ popup.time }}</p>
+        <p>Info {{ popup.info }}</p>
+        <p>etc {{ popup.etc }}</p>
+        <p><strong>Website:</strong> <a href="{{ popup.website }}" target="_blank">{{ popup.website }}</a></p>
+        {% if popup.popup_image %}
+          <img src="{{ popup.popup_image }}" alt="{{ popup.name }} Image">
+        {% endif %}
+      </div>
+    {% endfor %}
+  {% endblock %}
+    
+    
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
 
 
 
