@@ -139,9 +139,9 @@ USE_TZ = True
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "myapp", "static")]
 
-STATIC_URL = '/myapp/static/'
+STATIC_URL = 'static/'
 
-MEDIA_URL = '/popup_store_images/'
+MEDIA_URL = 'popup_store_images/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
