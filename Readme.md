@@ -19,7 +19,7 @@
 |      정의민       |          박서연         |       신민서         |                                                                                                               
 | :------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | 
 |   <img width="160px" src="https://github.com/2023-AHEUNGTHON/Team_1/assets/94633589/f7f60b7b-6a04-41e8-a38f-8cd619fd6e4a" > |             <img width="160px" src="https://github.com/2023-AHEUNGTHON/Team_1/assets/94633589/f7f60b7b-6a04-41e8-a38f-8cd619fd6e4a" >    |                 <img width="160px" src="https://github.com/2023-AHEUNGTHON/Team_1/assets/94633589/f7f60b7b-6a04-41e8-a38f-8cd619fd6e4a" >   |
-|   [@2023-AHEUNGTHON](https://github.com/2023-AHEUNGTHON)   |    [@2023-AHEUNGTHON](https://github.com/2023-AHEUNGTHON)  | [@2023-AHEUNGTHON](https://github.com/2023-AHEUNGTHON)  |
+|   [euimin-118]((https://github.com/euimin-118)   |    [@2023-AHEUNGTHON](https://github.com/2023-AHEUNGTHON)  | [@2023-AHEUNGTHON](https://github.com/2023-AHEUNGTHON)  |
 | 숭실대학교 무역학과 4학년 | 상명대학교 컴퓨터과학전공 3학년 | 성결대학교 미디어소프트웨어학과 2학년 |
 
 |      김승언       |          김현수         |       송준용         |                                                                                                               
