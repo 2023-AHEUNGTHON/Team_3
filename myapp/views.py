@@ -16,10 +16,7 @@ def survey(request):
 
 def result(request, usermbti):
     if request.method == 'GET':
-        print(usermbti)
-        popup = Popup.objects.filter(mbti='ESTJ').get()
-        print("popup: ")
-
+        popup = Popup.objects.filter(mbti=usermbti).get()
         popup = {
                 'mbti': popup.mbti,
                 'name': popup.name,
@@ -31,6 +28,6 @@ def result(request, usermbti):
                 'info': popup.info,
                 'etc': popup.etc,
         }
-        
-        # return render(request, 'result.html', {'popup':popup})
-        return JsonResponse({'popup':popup})
+        return JsonResponse(popup, safe=False, json_dumps_params={'ensure_ascii': False})
+    if request.method == 'POST':
+        return redirect(request, 'result.html', {'popup':popup})

@@ -1,5 +1,5 @@
 var num = 1;
-var mbti = ""; //mbti변수 선언
+var mbti = "";
 
 window.addEventListener('load', function() {
     next();
@@ -21,8 +21,6 @@ function next() {
         };
 
         var csrfToken = $('[name=csrfmiddlewaretoken]').val();
-        //var selectedAnswer = $("form#surveyForm").serializeArray();
-        //console.log('Selected Answer:', selectedAnswer);  // 추가된 로그 출력
         if (!csrfToken) {
             csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
         }
@@ -37,15 +35,9 @@ function next() {
                        'X-Requested-With': 'XMLHttpRequest', 
             },
             success: function(data) {
-                console.log("메롱")
-                console.log(data);
                 window.location.href='/result/' + data.popup.mbti;
-                //alert(data.message);
-                //서버응답에 따라서
-                //window.location.href ='/result/?mbti=' +data.message + '&popup'+data.recommended_popup;
             }
         });
-        // window.location.href = '../html/index.html';
     } else {
         let presentNum = 0;
         if (num < 10) { presentNum = "0" + num; } else { presentNum = num; }
