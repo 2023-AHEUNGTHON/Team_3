@@ -17,7 +17,7 @@ def survey(request):
 def result(request, usermbti):
     if request.method == 'GET':
         print(usermbti)
-        popup = Popup.objects.filter(mbti='ESTJ').get()
+        popup = Popup.objects.filter(mbti=usermbti).get()
         print("popup: ")
 
         popup = {
