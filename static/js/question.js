@@ -1,19 +1,79 @@
 var num = 1;
+var mbti = "";
 
 window.addEventListener('load', function() {
     next();
 });
 
+function submitMBTI() {
+    console.log('adsfsf');
+    var csrfToken = $('[name=csrfmiddlewaretoken]').val();
+    //var selectedAnswer = $("form#surveyForm").serializeArray();
+    //console.log('Selected Answer:', selectedAnswer);  // 추가된 로그 출력
+    if (!csrfToken) {
+        
+        csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+    }
+    console.log('CSRF Token', csrfToken);
+    console.log('aaa')
+    console.log($("mbti").val(mbti));
+
+    $("mbti").val(mbti);
+    var dataToSend = {
+        'mbti':mbti,
+    };
+
+    //Ajax로 서버에 선택한 답변 전송
+    $.ajax({
+        url: url,
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(dataToSend),
+        dataType: 'json',
+        headers: { 'X-CSRFToken': csrfToken,
+                   'X-Requested-With': 'XMLHttpRequest', 
+        },
+        success: function(data) {
+            console.log(data);
+            if (url == '/survey/') {
+                window.location.href = '/result';
+            } else if (url == '/result/') {
+                window.location.href = '/result';
+            }
+            //window.location.href='/result';
+            //alert(data.message);
+            //서버응답에 따라서
+            //window.location.href ='/result/?mbti=' +data.message + '&popup'+data.recommended_popup;
+        }
+    });
+    
+}
+
 function next() {
     if (num == 13) {
-        var mbti = "";
         $("#EI").val() < 2 ? (mbti += "I") : (mbti += "E");
         $("#SN").val() < 2 ? (mbti += "N") : (mbti += "S");
         $("#TF").val() < 2 ? (mbti += "F") : (mbti += "T");
         $("#JP").val() < 2 ? (mbti += "P") : (mbti += "J");
 
         console.log(mbti);
+        console.log($("#userMbti").val());
+
+        // submitMBTI();
         // window.location.href = '../html/index.html';
+
+        $.ajax({
+            type:'POST',
+            url:'127.0.0.1:8000/survey/',
+            data:JSON.stringify(mbti),
+            success:function(json) {
+                console.log("data pass success", json);
+            },
+            error: function(xhr, errmsg, err) {
+                console.log(xhr.status + ":"+xhr.responseText)
+            }
+        });
+
     } else {
         let presentNum = 0;
         if (num < 10) { presentNum = "0" + num; } else { presentNum = num; }
