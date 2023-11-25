@@ -37,8 +37,9 @@ function next() {
                        'X-Requested-With': 'XMLHttpRequest', 
             },
             success: function(data) {
+                console.log("메롱")
                 console.log(data);
-                window.location.href='/result';
+                window.location.href='/result/' + data.popup.mbti;
                 //alert(data.message);
                 //서버응답에 따라서
                 //window.location.href ='/result/?mbti=' +data.message + '&popup'+data.recommended_popup;
