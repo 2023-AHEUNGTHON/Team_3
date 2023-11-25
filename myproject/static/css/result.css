@@ -38,6 +38,7 @@
 .main-title{
     font-size: 24px;
     margin-top:-8px;
+    padding: 0 30px;
 }
 .result-main img{
     padding: 20px;
@@ -79,6 +80,13 @@
     border-radius: 20px;
     padding-left: 25px;
     padding-right: 25px;
+    word-wrap: break-word;
+    word-break: keep-all;
+    text-align: center;
+
+}
+.sub1{
+    padding:10px;
 }
 .btn-set{
     margin-top: 20px;

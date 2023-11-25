@@ -116,7 +116,7 @@ class SurveyView(View):
                 'ISFP': 16,
         }
         #초기화
-        json.dumps(str(Popup.popup_image))
+        #json.dumps(str(Popup.popup_image))
         serialized_data = {
             'mbti': None,
             'name': None,

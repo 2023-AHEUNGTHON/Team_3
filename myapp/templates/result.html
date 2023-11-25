@@ -9,9 +9,8 @@
     <meta property="og:url" content="https://POPTI.html">
     <meta property="og:title" content="POPTI">
     <meta property="og:description" content="나랑 여기 가자!">
-    {% if popup.popup_image %}
-    <meta property="og:image" content="{{ popup.popup_image }}">
-    {% endif %}
+    <meta property="og:image" content="{% static 'img/mainimg.png' %}">
+    <link rel="icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
     <title>POPTI</title>
     <link rel="stylesheet" href="{% static 'myapp/css/result.css' %}">
     <script src="myapp/js/result.js" defer></script>
@@ -42,51 +41,62 @@
             <p class="content-title sebang-font">{{ popup.name }}</p>
             <div class="content-all">
                 <div class="content-sub gong-font">
+<<<<<<< Updated upstream
                     <p>위치 : {{ popup.location }}</p>
                     <p>시간 : {{ popup.time }}</p>
+=======
+                    <p class="sub1">위치 : {{ popup.location }}</p>
+                    <p class="sub2">시간 : {{ popup.time }}</p>
+>>>>>>> Stashed changes
                     <p>{{ popup.etc }}<br/>
-                        <a href="{{ popup.website }}" target='_blank'>예약 링크</a></p>
                     <p><a href="{{ popup.website }}" target='_blank'>인스타그램</a></p>
                 </div>
                 <div class="btn-set text-center d-flex justify-content-center">
                     <a href="{% url 'survey' %}"><button class="btn1 gong-font">다시 검사하기</button></a><br/>
-                    <button class="btn2 gong-font" onClick="copyUrl()">친구들에게 공유하기</button></a>
+                    <button class="btn2 gong-font" onClick="copyUrl()">같이 갈 친구 구하기</button></a>
                 </div>
-                <div class="footer text-center sebang-font">
-                    <p>어흥해커톤 일석삼조</p>
-                </div>
+                <div class="box1"></div>
+                <div class="map" id="map" style="width:320px;height:300px;margin-top:26px;border-radius:10px;">
+            </div>
+            <div class="footer text-center sebang-font">
+                <p>어흥해커톤 일석삼조</p>
             </div>
             <script>
                 /* 링크 복사 */
                 let nowUrl = window.location.href;
+                var popupMapString = "{{ popup.map }}";
+
+                var coordinates = popupMapString.split(',').map(function(coord) {
+                    return parseFloat(coord);
+                });
+                
                 function copyUrl(){ 
                         navigator.clipboard.writeText(nowUrl).then(res=>{
                         alert("주소가 복사되었습니다!");
                         })
                 }
+
+                /* 지도 */
                         var container = document.getElementById('map'); 
                         var options = { 
-                            center: new kakao.maps.LatLng(37.5484025,127.0424599), 
+                            center: new kakao.maps.LatLng(coordinates[0], coordinates[1]),
                             level: 3 
                         };
 
                         var map = new kakao.maps.Map(container, options); 
-                        var markerPosition  = new kakao.maps.LatLng(37.5484025,127.0424599); 
+                        var markerPosition  = new kakao.maps.LatLng(coordinates[0], coordinates[1]); 
                         var marker = new kakao.maps.Marker({
                           position: markerPosition,
                           clickable: true
                       });
                       marker.setMap(map);
                       kakao.maps.event.addListener(marker, 'click', function() {
-                        window.open("https://map.kakao.com/link/map/37.5484025,127.0424599", '_blank'); 
+                        window.open("https://map.kakao.com/link/map/"+coordinates[0]+","+coordinates[1], '_blank'); 
                   });
                     </script>
                 </div>
                 {% endfor %}
                 {% endblock %}
-                <div class="footer text-center sebang-font">
-                    <p>어흥해커톤 일석삼조</p>
-                </div>
             </div>
         </div>
     </div>
