@@ -15,7 +15,7 @@ class Popup(models.Model):
     time = models.CharField(max_length=100)
     website = models.URLField()
     id = models.IntegerField(primary_key=True)
-    popup_image = models.ImageField(upload_to='popup_store_images/', null=True, blank=True)
+    popup_image = models.ImageField(upload_to='', null=True, blank=True)
 
     def __str__(self):
         return self.name

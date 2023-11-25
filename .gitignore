@@ -13,3 +13,4 @@ media
 myapp/migrations
 venv
 .env
+media
